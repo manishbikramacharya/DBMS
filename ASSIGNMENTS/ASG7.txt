@@ -1,0 +1,87 @@
+srman@MANISH c:\xampp
+# mysql -u root
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 14
+Server version: 10.4.32-MariaDB mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| clients_db         |
+| company            |
+| emp_db             |
+| enterprise_db      |
+| mysql              |
+| performance_schema |
+| sales_db           |
+| test               |
++--------------------+
+9 rows in set (0.001 sec)
+
+MariaDB [(none)]> use enterprise_db;
+Database changed
+
+MariaDB [enterprise_db]> select e1.ename as employee_name, e2.ename as manager_name
+    -> from emp e1
+    -> join emp e2 on e1.mgr = e2.empno
+    -> where e1.sal > e2.sal;
++---------------+--------------+
+| employee_name | manager_name |
++---------------+--------------+
+| Krishna Gurung| Ram Bahadur  |
++---------------+--------------+
+1 row in set (0.001 sec)
+
+MariaDB [enterprise_db]> select e.ename as employee_name, e.deptno, e.sal
+    -> from emp e
+    -> join (select deptno, max(sal) as max_sal from emp group by deptno) as dept_max
+    -> on e.deptno = dept_max.deptno and e.sal = dept_max.max_sal;
++--------------+--------+-------+
+| employee_name| deptno | sal   |
++--------------+--------+-------+
+| Ram Bahadur  |     10 | 60000 |
+| Krishna Gurung|     40 | 30000 |
++--------------+--------+-------+
+2 rows in set (0.001 sec)
+
+MariaDB [enterprise_db]> select e1.ename as employee1, e2.ename as employee2, e1.loc
+    -> from emp e1
+    -> join emp e2 on e1.loc = e2.loc and e1.empno <> e2.empno;
++-------------+--------------+-----------+
+| employee1   | employee2    | loc       |
++-------------+--------------+-----------+
+| Sita Lama   | Ram Bahadur  | Kathmandu |
+| Krishna Gurung | Sita Lama  | Kathmandu |
+| Ram Bahadur | Krishna Gurung | Kathmandu |
++-------------+--------------+-----------+
+3 rows in set (0.001 sec)
+
+MariaDB [enterprise_db]> select e.ename, e.sal
+    -> from emp e
+    -> where e.sal = (select min(sal) from emp);
++--------------+------+
+| ename        | sal  |
++--------------+------+
+| Krishna Gurung | 30000 |
+| Sita Lama     | 30000 |
++--------------+------+
+2 rows in set (0.001 sec)
+
+MariaDB [enterprise_db]> select d.dname
+    -> from dept d
+    -> left join emp e on d.deptno = e.deptno
+    -> where e.empno is NULL;
++-------------+
+| dname       |
++-------------+
+| Finance     |
++-------------+
+1 row in set (0.001 sec)
+
+MariaDB [enterprise_db]>

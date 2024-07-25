@@ -1,0 +1,106 @@
+srman@MANISH c:\xampp
+# mysql -u root
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 13
+Server version: 10.4.32-MariaDB mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+MariaDB [(none)]> create database enterprise_db;
+Query OK, 1 row affected (0.001 sec)
+
+MariaDB [(none)]> use enterprise_db;
+Database changed
+
+MariaDB [enterprise_db]> create table dept (
+    -> deptno int primary key,
+    -> dname varchar(50),
+    -> loc varchar(50));
+Query OK, 0 rows affected (0.030 sec)
+
+MariaDB [enterprise_db]> create table emp (
+    -> empno int primary key,
+    -> ename varchar(50),
+    -> job varchar(50),
+    -> mgr int,
+    -> hiredate date,
+    -> sal int,
+    -> comm int,
+    -> deptno int,
+    -> foreign key (deptno) references dept(deptno));
+Query OK, 0 rows affected (0.040 sec)
+
+MariaDB [enterprise_db]> insert into dept (deptno, dname, loc)
+    -> values
+    -> (10, 'HR', 'Kathmandu'),
+    -> (20, 'Sales', 'Pokhara'),
+    -> (30, 'Finance', 'Lalitpur'),
+    -> (40, 'IT', 'Bharatpur');
+Query OK, 4 rows affected (0.010 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+MariaDB [enterprise_db]> insert into emp (empno, ename, job, mgr, hiredate, sal, comm, deptno)
+    -> values
+    -> (1, 'Ram Bahadur', 'Manager', NULL, '1990-01-01', 60000, 10000, 10),
+    -> (2, 'Sita Lama', 'Clerk', 1, '1995-01-01', 30000, 5000, 10),
+    -> (3, 'Hari Shrestha', 'Salesman', 1, '1985-01-01', 20000, 2000, 20),
+    -> (4, 'Gita Karki', 'Analyst', 1, '1980-01-01', 40000, 3000, 30),
+    -> (5, 'Krishna Gurung', 'Clerk', 1, '1990-01-01', 30000, 1000, 40);
+Query OK, 5 rows affected (0.010 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+MariaDB [enterprise_db]> update emp set sal = sal * 1.15 where hiredate < DATE_SUB(CURDATE(), INTERVAL 30 YEAR);
+Query OK, 2 rows affected (0.010 sec)
+Rows matched: 2  Changed: 2  Warnings: 0
+
+MariaDB [enterprise_db]> select * from emp;
++-------+---------------+----------+------+------------+-------+-------+--------+
+| empno | ename         | job      | mgr  | hiredate   | sal   | comm  | deptno |
++-------+---------------+----------+------+------------+-------+-------+--------+
+|     1 | Ram Bahadur   | Manager  | NULL | 1990-01-01 | 60000 | 10000 |     10 |
+|     2 | Sita Lama     | Clerk    |    1 | 1995-01-01 | 30000 |  5000 |     10 |
+|     3 | Hari Shrestha | Salesman |    1 | 1985-01-01 | 23000 |  2000 |     20 |
+|     4 | Gita Karki    | Analyst  |    1 | 1980-01-01 | 46000 |  3000 |     30 |
+|     5 | Krishna Gurung| Clerk    |    1 | 1990-01-01 | 30000 |  1000 |     40 |
++-------+---------------+----------+------+------------+-------+-------+--------+
+5 rows in set (0.000 sec)
+
+MariaDB [enterprise_db]> delete from emp where hiredate < DATE_SUB(CURDATE(), INTERVAL 30 YEAR);
+Query OK, 2 rows affected (0.005 sec)
+
+MariaDB [enterprise_db]> select * from emp;
++-------+--------------+---------+------+------------+-------+-------+--------+
+| empno | ename        | job     | mgr  | hiredate   | sal   | comm  | deptno |
++-------+--------------+---------+------+------------+-------+-------+--------+
+|     1 | Ram Bahadur  | Manager | NULL | 1990-01-01 | 60000 | 10000 |     10 |
+|     2 | Sita Lama    | Clerk   |    1 | 1995-01-01 | 30000 |  5000 |     10 |
+|     5 | Krishna Gurung | Clerk  |    1 | 1990-01-01 | 30000 |  1000 |     40 |
++-------+--------------+---------+------+------------+-------+-------+--------+
+3 rows in set (0.000 sec)
+
+MariaDB [enterprise_db]> select mgr, count(*) as num_of_employees from emp group by mgr order by num_of_employees desc limit 1;
++------+------------------+
+| mgr  | num_of_employees |
++------+------------------+
+|    1 |                2 |
++------+------------------+
+1 row in set (0.000 sec)
+
+MariaDB [enterprise_db]> create view emp_manager as
+    -> select e.ename as employee_name, m.ename as manager_name
+    -> from emp e
+    -> left join emp m on e.mgr = m.empno;
+Query OK, 0 rows affected (0.020 sec)
+
+MariaDB [enterprise_db]> select * from emp_manager;
++---------------+--------------+
+| employee_name | manager_name |
++---------------+--------------+
+| Ram Bahadur   | NULL         |
+| Sita Lama     | Ram Bahadur  |
+| Krishna Gurung | Ram Bahadur |
++---------------+--------------+
+3 rows in set (0.000 sec)
+
+MariaDB [enterprise_db]>

@@ -1,0 +1,100 @@
+
+srman@MANISH c:\xampp
+# mysql -u root
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 10
+Server version: 10.4.32-MariaDB mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> create database school;
+Query OK, 1 row affected (0.001 sec)
+
+MariaDB [(none)]> use school;
+Database changed
+
+MariaDB [school]> create table teacher (
+    -> id int primary key,
+    -> name varchar(50),
+    -> deptno int,
+    -> date_of_joining date,
+    -> deptname varchar(50),
+    -> location varchar(50),
+    -> salary int);
+Query OK, 0 rows affected (0.020 sec)
+
+MariaDB [school]> insert into teacher (id, name, deptno, date_of_joining, deptname, location, salary)
+    -> values
+    -> (1, 'Ram Bahadur', 101, '2020-01-01', 'Mathematics', 'Kathmandu', 40000),
+    -> (2, 'Sita Rai', 102, '2019-02-15', 'Commerce', 'Pokhara', 35000),
+    -> (3, 'Hari Shrestha', 101, '2018-03-10', 'Mathematics', 'Lalitpur', 42000),
+    -> (4, 'Gita Gurung', 103, '2021-04-20', 'Science', 'Bharatpur', 38000),
+    -> (5, 'Krishna Thapa', 102, '2017-05-25', 'Commerce', 'Butwal', 36000);
+Query OK, 5 rows affected (0.010 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+MariaDB [school]> select * from teacher;
++----+--------------+--------+----------------+-------------+-----------+--------+
+| id | name         | deptno | date_of_joining| deptname    | location  | salary |
++----+--------------+--------+----------------+-------------+-----------+--------+
+|  1 | Ram Bahadur  |    101 | 2020-01-01     | Mathematics | Kathmandu |  40000 |
+|  2 | Sita Rai     |    102 | 2019-02-15     | Commerce    | Pokhara   |  35000 |
+|  3 | Hari Shrestha|    101 | 2018-03-10     | Mathematics | Lalitpur  |  42000 |
+|  4 | Gita Gurung  |    103 | 2021-04-20     | Science     | Bharatpur |  38000 |
+|  5 | Krishna Thapa|    102 | 2017-05-25     | Commerce    | Butwal    |  36000 |
++----+--------------+--------+----------------+-------------+-----------+--------+
+5 rows in set (0.000 sec)
+
+MariaDB [school]> update teacher set salary = salary * 1.25 where deptname = 'Mathematics';
+Query OK, 2 rows affected (0.004 sec)
+Rows matched: 2  Changed: 2  Warnings: 0
+
+MariaDB [school]> select * from teacher;
++----+--------------+--------+----------------+-------------+-----------+--------+
+| id | name         | deptno | date_of_joining| deptname    | location  | salary |
++----+--------------+--------+----------------+-------------+-----------+--------+
+|  1 | Ram Bahadur  |    101 | 2020-01-01     | Mathematics | Kathmandu |  50000 |
+|  2 | Sita Rai     |    102 | 2019-02-15     | Commerce    | Pokhara   |  35000 |
+|  3 | Hari Shrestha|    101 | 2018-03-10     | Mathematics | Lalitpur  |  52500 |
+|  4 | Gita Gurung  |    103 | 2021-04-20     | Science     | Bharatpur |  38000 |
+|  5 | Krishna Thapa|    102 | 2017-05-25     | Commerce    | Butwal    |  36000 |
++----+--------------+--------+----------------+-------------+-----------+--------+
+5 rows in set (0.000 sec)
+
+MariaDB [school]> rollback;
+Query OK, 0 rows affected (0.002 sec)
+
+MariaDB [school]> select * from teacher;
++----+--------------+--------+----------------+-------------+-----------+--------+
+| id | name         | deptno | date_of_joining| deptname    | location  | salary |
++----+--------------+--------+----------------+-------------+-----------+--------+
+|  1 | Ram Bahadur  |    101 | 2020-01-01     | Mathematics | Kathmandu |  40000 |
+|  2 | Sita Rai     |    102 | 2019-02-15     | Commerce    | Pokhara   |  35000 |
+|  3 | Hari Shrestha|    101 | 2018-03-10     | Mathematics | Lalitpur  |  42000 |
+|  4 | Gita Gurung  |    103 | 2021-04-20     | Science     | Bharatpur |  38000 |
+|  5 | Krishna Thapa|    102 | 2017-05-25     | Commerce    | Butwal    |  36000 |
++----+--------------+--------+----------------+-------------+-----------+--------+
+5 rows in set (0.000 sec)
+
+MariaDB [school]> update teacher set salary = salary * 1.15 where deptname = 'Commerce';
+Query OK, 2 rows affected (0.004 sec)
+Rows matched: 2  Changed: 2  Warnings: 0
+
+MariaDB [school]> commit;
+Query OK, 0 rows affected (0.001 sec)
+
+MariaDB [school]> select * from teacher;
++----+--------------+--------+----------------+-------------+-----------+--------+
+| id | name         | deptno | date_of_joining| deptname    | location  | salary |
++----+--------------+--------+----------------+-------------+-----------+--------+
+|  1 | Ram Bahadur  |    101 | 2020-01-01     | Mathematics | Kathmandu |  40000 |
+|  2 | Sita Rai     |    102 | 2019-02-15     | Commerce    | Pokhara   |  40250 |
+|  3 | Hari Shrestha|    101 | 2018-03-10     | Mathematics | Lalitpur  |  42000 |
+|  4 | Gita Gurung  |    103 | 2021-04-20     | Science     | Bharatpur |  38000 |
+|  5 | Krishna Thapa|    102 | 2017-05-25     | Commerce    | Butwal    |  41400 |
++----+--------------+--------+----------------+-------------+-----------+--------+
+5 rows in set (0.000 sec)
+
+MariaDB [school]>

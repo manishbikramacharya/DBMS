@@ -1,0 +1,89 @@
+srman@MANISH c:\xampp
+# mysql -u root
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 11
+Server version: 10.4.32-MariaDB mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> create database sales_db;
+Query OK, 1 row affected (0.001 sec)
+
+MariaDB [(none)]> use sales_db;
+Database changed
+
+MariaDB [sales_db]> create table sales (
+    -> sales_no int primary key,
+    -> sales_name varchar(50),
+    -> branch varchar(50),
+    -> sales_amount int,
+    -> dob date);
+Query OK, 0 rows affected (0.030 sec)
+
+MariaDB [sales_db]> insert into sales (sales_no, sales_name, branch, sales_amount, dob)
+    -> values
+    -> (1, 'Ram Shrestha', 'Kathmandu', 5000, '1985-12-15'),
+    -> (2, 'Sita Rai', 'Pokhara', 6000, '1990-11-20'),
+    -> (3, 'Hari Bahadur', 'Kathmandu', 7000, '1988-12-25'),
+    -> (4, 'Gita Gurung', 'Bharatpur', 8000, '1992-06-05'),
+    -> (5, 'Krishna Thapa', 'Pokhara', 9000, '1987-12-31');
+Query OK, 5 rows affected (0.020 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+MariaDB [sales_db]> select * from sales;
++----------+--------------+-----------+--------------+------------+
+| sales_no | sales_name   | branch    | sales_amount | dob        |
++----------+--------------+-----------+--------------+------------+
+|        1 | Ram Shrestha | Kathmandu |         5000 | 1985-12-15 |
+|        2 | Sita Rai     | Pokhara   |         6000 | 1990-11-20 |
+|        3 | Hari Bahadur | Kathmandu |         7000 | 1988-12-25 |
+|        4 | Gita Gurung  | Bharatpur |         8000 | 1992-06-05 |
+|        5 | Krishna Thapa| Pokhara   |         9000 | 1987-12-31 |
++----------+--------------+-----------+--------------+------------+
+5 rows in set (0.000 sec)
+
+MariaDB [sales_db]> select branch, sum(sales_amount) as total_sales_amount from sales group by branch;
++-----------+------------------+
+| branch    | total_sales_amount |
++-----------+------------------+
+| Bharatpur |              8000 |
+| Kathmandu |             12000 |
+| Pokhara   |             15000 |
++-----------+------------------+
+3 rows in set (0.000 sec)
+
+MariaDB [sales_db]> select branch, avg(sales_amount) as average_sales_amount from sales group by branch;
++-----------+--------------------+
+| branch    | average_sales_amount |
++-----------+--------------------+
+| Bharatpur |               8000.0 |
+| Kathmandu |               6000.0 |
+| Pokhara   |               7500.0 |
++-----------+--------------------+
+3 rows in set (0.000 sec)
+
+MariaDB [sales_db]> select sales_name, date_format(dob, '%d-%b-%y') as dob from sales where month(dob) = 12;
++--------------+-------------+
+| sales_name   | dob         |
++--------------+-------------+
+| Ram Shrestha | 15-Dec-85   |
+| Hari Bahadur | 25-Dec-88   |
+| Krishna Thapa| 31-Dec-87   |
++--------------+-------------+
+3 rows in set (0.000 sec)
+
+MariaDB [sales_db]> select sales_name, date_format(dob, '%d-%b-%y') as dob from sales order by month(dob);
++--------------+-------------+
+| sales_name   | dob         |
++--------------+-------------+
+| Gita Gurung  | 05-Jun-92   |
+| Sita Rai     | 20-Nov-90   |
+| Ram Shrestha | 15-Dec-85   |
+| Hari Bahadur | 25-Dec-88   |
+| Krishna Thapa| 31-Dec-87   |
++--------------+-------------+
+5 rows in set (0.000 sec)
+
+MariaDB [sales_db]>

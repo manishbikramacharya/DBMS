@@ -1,0 +1,88 @@
+srman@MANISH c:\xampp
+# mysql -u root
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 9
+Server version: 10.4.32-MariaDB mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+MariaDB [(none)]> create database clients_db;
+Query OK, 1 row affected (0.001 sec)
+
+MariaDB [(none)]> use clients_db;
+Database changed
+
+MariaDB [clients_db]> create table client_master (
+    -> clientno varchar(10) primary key,
+    -> name varchar(50),
+    -> address varchar(100),
+    -> city varchar(50),
+    -> state varchar(50),
+    -> bal_due int);
+Query OK, 0 rows affected (0.020 sec)
+
+MariaDB [clients_db]> insert into client_master (clientno, name, address, city, state, bal_due)
+    -> values
+    -> ('C101', 'Ram Shrestha', '123 Kathmandu Street', 'Kathmandu', 'Bagmati', 4000),
+    -> ('C102', 'Sita Thapa', '456 Bharatpur Avenue', 'Bharatpur', 'Bagmati', 6000),
+    -> ('C103', 'Hari Bahadur', '789 Pokhara Road', 'Pokhara', 'Gandaki', 3000),
+    -> ('C104', 'Gita Koirala', '321 Butwal Boulevard', 'Butwal', 'Lumbini', 7000),
+    -> ('C123', 'Krishna Adhikari', '654 Pokhara Lane', 'Pokhara', 'Gandaki', 5200);
+Query OK, 5 rows affected (0.015 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+MariaDB [clients_db]> select * from client_master;
++----------+------------------+------------------------+-----------+---------+---------+
+| clientno | name             | address                | city      | state   | bal_due |
++----------+------------------+------------------------+-----------+---------+---------+
+| C101     | Ram Shrestha     | 123 Kathmandu Street   | Kathmandu | Bagmati |    4000 |
+| C102     | Sita Thapa       | 456 Bharatpur Avenue   | Bharatpur | Bagmati |    6000 |
+| C103     | Hari Bahadur     | 789 Pokhara Road       | Pokhara   | Gandaki |    3000 |
+| C104     | Gita Koirala     | 321 Butwal Boulevard   | Butwal    | Lumbini |    7000 |
+| C123     | Krishna Adhikari | 654 Pokhara Lane       | Pokhara   | Gandaki |    5200 |
++----------+------------------+------------------------+-----------+---------+---------+
+5 rows in set (0.000 sec)
+
+MariaDB [clients_db]> select name from client_master where bal_due > 5000;
++------------------+
+| name             |
++------------------+
+| Sita Thapa       |
+| Gita Koirala     |
+| Krishna Adhikari |
++------------------+
+3 rows in set (0.000 sec)
+
+MariaDB [clients_db]> update client_master set bal_due = 5100 where clientno = 'C123';
+Query OK, 1 row affected (0.005 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [clients_db]> select * from client_master;
++----------+------------------+------------------------+-----------+---------+---------+
+| clientno | name             | address                | city      | state   | bal_due |
++----------+------------------+------------------------+-----------+---------+---------+
+| C101     | Ram Shrestha     | 123 Kathmandu Street   | Kathmandu | Bagmati |    4000 |
+| C102     | Sita Thapa       | 456 Bharatpur Avenue   | Bharatpur | Bagmati |    6000 |
+| C103     | Hari Bahadur     | 789 Pokhara Road       | Pokhara   | Gandaki |    3000 |
+| C104     | Gita Koirala     | 321 Butwal Boulevard   | Butwal    | Lumbini |    7000 |
+| C123     | Krishna Adhikari | 654 Pokhara Lane       | Pokhara   | Gandaki |    5100 |
++----------+------------------+------------------------+-----------+---------+---------+
+5 rows in set (0.000 sec)
+
+MariaDB [clients_db]> alter table client_master rename to client12;
+Query OK, 0 rows affected (0.003 sec)
+
+MariaDB [clients_db]> select clientno, name, bal_due as 'BALANCE' from client12;
++----------+------------------+---------+
+| clientno | name             | BALANCE |
++----------+------------------+---------+
+| C101     | Ram Shrestha     |    4000 |
+| C102     | Sita Thapa       |    6000 |
+| C103     | Hari Bahadur     |    3000 |
+| C104     | Gita Koirala     |    7000 |
+| C123     | Krishna Adhikari |    5100 |
++----------+------------------+---------+
+5 rows in set (0.000 sec)
+
+MariaDB [clients_db]>

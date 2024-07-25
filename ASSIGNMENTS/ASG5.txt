@@ -1,0 +1,105 @@
+srman@MANISH c:\xampp
+# mysql -u root
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 12
+Server version: 10.4.32-MariaDB mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+
+MariaDB [(none)]> create database emp_db;
+Query OK, 1 row affected (0.001 sec)
+
+MariaDB [(none)]> use emp_db;
+Database changed
+
+MariaDB [emp_db]> create table emp (
+    -> emp_no int primary key,
+    -> emp_name varchar(50),
+    -> designation varchar(50),
+    -> basic int,
+    -> da int,
+    -> hra int,
+    -> pf int,
+    -> gross_pay int,
+    -> net_pay int);
+Query OK, 0 rows affected (0.030 sec)
+
+MariaDB [emp_db]> insert into emp (emp_no, emp_name, designation, basic, da, hra, pf, gross_pay, net_pay)
+    -> values
+    -> (1, 'Ram Bahadur', 'Manager', 15000, 0, 0, 0, 0, 0),
+    -> (2, 'Sita Rai', 'Clerk', 8000, 0, 0, 0, 0, 0),
+    -> (3, 'Hari Bahadur', 'Engineer', 12000, 0, 0, 0, 0, 0),
+    -> (4, 'Gita Gurung', 'HR', 10000, 0, 0, 0, 0, 0),
+    -> (5, 'Krishna Thapa', 'Sales', 9000, 0, 0, 0, 0, 0);
+Query OK, 5 rows affected (0.020 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+MariaDB [emp_db]> update emp set da = basic * 0.10;
+Query OK, 5 rows affected (0.004 sec)
+Rows matched: 5  Changed: 5  Warnings: 0
+
+MariaDB [emp_db]> update emp set hra = basic * 0.15;
+Query OK, 5 rows affected (0.004 sec)
+Rows matched: 5  Changed: 5  Warnings: 0
+
+MariaDB [emp_db]> update emp set pf = basic * 0.12;
+Query OK, 5 rows affected (0.004 sec)
+Rows matched: 5  Changed: 5 Warnings: 0
+
+MariaDB [emp_db]> update emp set gross_pay = basic + da + hra;
+Query OK, 5 rows affected (0.004 sec)
+Rows matched: 5  Changed: 5 Warnings: 0
+
+MariaDB [emp_db]> update emp set net_pay = gross_pay - pf;
+Query OK, 5 rows affected (0.004 sec)
+Rows matched: 5  Changed: 5 Warnings: 0
+
+MariaDB [emp_db]> select * from emp;
++--------+--------------+-------------+-------+------+------+------+------+---------+
+| emp_no | emp_name     | designation | basic | da   | hra  | pf   | gross_pay | net_pay |
++--------+--------------+-------------+-------+------+------+------+------+---------+
+|      1 | Ram Bahadur  | Manager     | 15000 | 1500 | 2250 | 1800 |    18750 |   16950 |
+|      2 | Sita Rai     | Clerk       |  8000 |  800 | 1200 |  960 |    10000 |    9040 |
+|      3 | Hari Bahadur | Engineer    | 12000 | 1200 | 1800 | 1440 |    15000 |   13560 |
+|      4 | Gita Gurung  | HR          | 10000 | 1000 | 1500 | 1200 |    12500 |   11300 |
+|      5 | Krishna Thapa| Sales       |  9000 |  900 | 1350 | 1080 |    11250 |   10170 |
++--------+--------------+-------------+-------+------+------+------+------+---------+
+5 rows in set (0.000 sec)
+
+MariaDB [emp_db]> select emp_name, designation, basic from emp where basic in (select min(basic) from emp group by designation);
++-------------+-------------+-------+
+| emp_name    | designation | basic |
++-------------+-------------+-------+
+| Sita Rai    | Clerk       |  8000 |
+| Krishna Thapa | Sales       |  9000 |
++-------------+-------------+-------+
+2 rows in set (0.000 sec)
+
+MariaDB [emp_db]> update emp set net_pay = net_pay + 1200 where net_pay < 10000;
+Query OK, 1 row affected (0.004 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [emp_db]> select * from emp where gross_pay between 10000 and 20000;
++--------+--------------+-------------+-------+------+------+------+------+---------+
+| emp_no | emp_name     | designation | basic | da   | hra  | pf   | gross_pay | net_pay |
++--------+--------------+-------------+-------+------+------+------+------+---------+
+|      1 | Ram Bahadur  | Manager     | 15000 | 1500 | 2250 | 1800 |    18750 |   16950 |
+|      2 | Sita Rai     | Clerk       |  8000 |  800 | 1200 |  960 |    10000 |   10240 |
+|      3 | Hari Bahadur | Engineer    | 12000 | 1200 | 1800 | 1440 |    15000 |   13560 |
+|      4 | Gita Gurung  | HR          | 10000 | 1000 | 1500 | 1200 |    12500 |   11300 |
+|      5 | Krishna Thapa| Sales       |  9000 |  900 | 1350 | 1080 |    11250 |   10170 |
++--------+--------------+-------------+-------+------+------+------+------+---------+
+5 rows in set (0.000 sec)
+
+MariaDB [emp_db]> select * from emp where net_pay = (select max(net_pay) from emp);
++--------+--------------+-------------+-------+------+------+------+------+---------+
+| emp_no | emp_name     | designation | basic | da   | hra  | pf   | gross_pay | net_pay |
++--------+--------------+-------------+-------+------+------+------+------+---------+
+|      1 | Ram Bahadur  | Manager     | 15000 | 1500 | 2250 | 1800 |    18750 |   16950 |
++--------+--------------+-------------+-------+------+------+------+------+---------+
+1 row in set (0.000 sec)
+
+MariaDB [emp_db]>

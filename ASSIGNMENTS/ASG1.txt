@@ -1,0 +1,205 @@
+srman@MANISH c:\xampp
+#  mysql -u root
+ERROR 2002 (HY000): Can't connect to MySQL server on 'localhost' (10061)
+
+srman@MANISH c:\xampp
+#  mysql -u root
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 8
+Server version: 10.4.32-MariaDB mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> create database company;
+Query OK, 1 row affected (0.001 sec)
+
+MariaDB [(none)]> use company;
+Database changed
+
+MariaDB [company]> create table employees (
+    -> emp_id int primary key,
+    -> first_name varchar(50),
+    -> last_name varchar(50),
+    -> phone_no varchar(20),
+    -> hire_date date,
+    -> job_id varchar(10),
+    -> emp_salary int,
+    -> commission_pct float,
+    -> manager_id int,
+    -> department_id int);
+Query OK, 0 rows affected (0.035 sec)
+
+MariaDB [company]> insert into employees (
+    -> emp_id, first_name, last_name, phone_no, hire_date, job_id, emp_salary, commission_pct, manager_id, department_id)
+    -> values
+    -> (1, 'Ram', 'Thapa', '9841000001', '2022-01-01', 'MGR', 5000, 0.10, 101, 60),
+    -> (2, 'Hari', 'Nepal', '9841000002', '2022-02-01', 'SUP', 4800, 0.05, 102, 70),
+    -> (3, 'Shyam', 'KC', '9841000003', '2022-03-01', 'CLK', 4500, 0.00, 101, 60),
+    -> (4, 'Emily', 'Austin', '9841000004', '2022-04-01', 'AST', 4700, 0.03, 103, 80),
+    -> (5, 'David', 'Wilson', '9841000005', '2022-05-01', 'LCT', 4900, 0.07, 104, 70);
+Query OK, 5 rows affected (0.010 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+MariaDB [company]> select * from employees;
++--------+-------------+-----------+------------+------------+--------+------------+----------------+------------+---------------+
+| emp_id | first_name  | last_name | phone_no   | hire_date  | job_id | emp_salary | commission_pct | manager_id | department_id |
++--------+-------------+-----------+------------+------------+--------+------------+----------------+------------+---------------+
+|      1 | Ram         | Thapa     | 9841000001 | 2022-01-01 | MGR    |       5000 |            0.1 |        101 |            60 |
+|      2 | Hari        | Nepal     | 9841000002 | 2022-02-01 | SUP    |       4800 |           0.05 |        102 |            70 |
+|      3 | Shyam       | KC        | 9841000003 | 2022-03-01 | CLK    |       4500 |            0.0 |        101 |            60 |
+|      4 | Emily       | Austin    | 9841000004 | 2022-04-01 | AST    |       4700 |           0.03 |        103 |            80 |
+|      5 | David       | Wilson    | 9841000005 | 2022-05-01 | LCT    |       4900 |           0.07 |        104 |            70 |
++--------+-------------+-----------+------------+------------+--------+------------+----------------+------------+---------------+
+5 rows in set (0.000 sec)
+
+MariaDB [company]> select emp_id, first_name, last_name, emp_salary from employees;
++--------+-------------+-----------+------------+
+| emp_id | first_name  | last_name | emp_salary |
++--------+-------------+-----------+------------+
+|      1 | Ram         | Thapa     |       5000 |
+|      2 | Hari        | Nepal     |       4800 |
+|      3 | Shyam       | KC        |       4500 |
+|      4 | Emily       | Austin    |       4700 |
+|      5 | David       | Wilson    |       4900 |
++--------+-------------+-----------+------------+
+5 rows in set (0.000 sec)
+
+MariaDB [company]> select first_name, last_name from employees where emp_salary >= 4800;
++-------------+-----------+
+| first_name  | last_name |
++-------------+-----------+
+| Ram         | Thapa     |
+| Hari        | Nepal     |
+| David       | Wilson    |
++-------------+-----------+
+3 rows in set (0.000 sec)
+
+MariaDB [company]> select first_name, last_name from employees where last_name = 'Austin';
++-------------+-----------+
+| first_name  | last_name |
++-------------+-----------+
+| Emily       | Austin    |
++-------------+-----------+
+1 row in set (0.000 sec)
+
+MariaDB [company]> select first_name, last_name from employees where department_id in (60, 70, 80);
++-------------+-----------+
+| first_name  | last_name |
++-------------+-----------+
+| Ram         | Thapa     |
+| Hari        | Nepal     |
+| Shyam       | KC        |
+| Emily       | Austin    |
+| David       | Wilson    |
++-------------+-----------+
+5 rows in set (0.000 sec)
+
+MariaDB [company]> select distinct manager_id from employees;
++------------+
+| manager_id |
++------------+
+|        101 |
+|        102 |
+|        103 |
+|        104 |
++------------+
+4 rows in set (0.000 sec)
+
+MariaDB [company]>MariaDB [(none)]> create database company;
+Query OK, 1 row affected (0.001 sec)
+
+MariaDB [(none)]> use company;
+Database changed
+
+MariaDB [company]> create table employees (
+    -> emp_id int primary key,
+    -> first_name varchar(50),
+    -> last_name varchar(50),
+    -> phone_no varchar(20),
+    -> hire_date date,
+    -> job_id varchar(10),
+    -> emp_salary int,
+    -> commission_pct float,
+    -> manager_id int,
+    -> department_id int);
+Query OK, 0 rows affected (0.035 sec)
+
+MariaDB [company]> insert into employees (
+    -> emp_id, first_name, last_name, phone_no, hire_date, job_id, emp_salary, commission_pct, manager_id, department_id)
+    -> values
+    -> (1, 'Ram', 'Thapa', '9841000001', '2022-01-01', 'MGR', 5000, 0.10, 101, 60),
+    -> (2, 'Hari', 'Nepal', '9841000002', '2022-02-01', 'SUP', 4800, 0.05, 102, 70),
+    -> (3, 'Shyam', 'KC', '9841000003', '2022-03-01', 'CLK', 4500, 0.00, 101, 60),
+    -> (4, 'Emily', 'Austin', '9841000004', '2022-04-01', 'AST', 4700, 0.03, 103, 80),
+    -> (5, 'David', 'Wilson', '9841000005', '2022-05-01', 'LCT', 4900, 0.07, 104, 70);
+Query OK, 5 rows affected (0.010 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+MariaDB [company]> select * from employees;
++--------+-------------+-----------+------------+------------+--------+------------+----------------+------------+---------------+
+| emp_id | first_name  | last_name | phone_no   | hire_date  | job_id | emp_salary | commission_pct | manager_id | department_id |
++--------+-------------+-----------+------------+------------+--------+------------+----------------+------------+---------------+
+|      1 | Ram         | Thapa     | 9841000001 | 2022-01-01 | MGR    |       5000 |            0.1 |        101 |            60 |
+|      2 | Hari        | Nepal     | 9841000002 | 2022-02-01 | SUP    |       4800 |           0.05 |        102 |            70 |
+|      3 | Shyam       | KC        | 9841000003 | 2022-03-01 | CLK    |       4500 |            0.0 |        101 |            60 |
+|      4 | Emily       | Austin    | 9841000004 | 2022-04-01 | AST    |       4700 |           0.03 |        103 |            80 |
+|      5 | David       | Wilson    | 9841000005 | 2022-05-01 | LCT    |       4900 |           0.07 |        104 |            70 |
++--------+-------------+-----------+------------+------------+--------+------------+----------------+------------+---------------+
+5 rows in set (0.000 sec)
+
+MariaDB [company]> select emp_id, first_name, last_name, emp_salary from employees;
++--------+-------------+-----------+------------+
+| emp_id | first_name  | last_name | emp_salary |
++--------+-------------+-----------+------------+
+|      1 | Ram         | Thapa     |       5000 |
+|      2 | Hari        | Nepal     |       4800 |
+|      3 | Shyam       | KC        |       4500 |
+|      4 | Emily       | Austin    |       4700 |
+|      5 | David       | Wilson    |       4900 |
++--------+-------------+-----------+------------+
+5 rows in set (0.000 sec)
+
+MariaDB [company]> select first_name, last_name from employees where emp_salary >= 4800;
++-------------+-----------+
+| first_name  | last_name |
++-------------+-----------+
+| Ram         | Thapa     |
+| Hari        | Nepal     |
+| David       | Wilson    |
++-------------+-----------+
+3 rows in set (0.000 sec)
+
+MariaDB [company]> select first_name, last_name from employees where last_name = 'Austin';
++-------------+-----------+
+| first_name  | last_name |
++-------------+-----------+
+| Emily       | Austin    |
++-------------+-----------+
+1 row in set (0.000 sec)
+
+MariaDB [company]> select first_name, last_name from employees where department_id in (60, 70, 80);
++-------------+-----------+
+| first_name  | last_name |
++-------------+-----------+
+| Ram         | Thapa     |
+| Hari        | Nepal     |
+| Shyam       | KC        |
+| Emily       | Austin    |
+| David       | Wilson    |
++-------------+-----------+
+5 rows in set (0.000 sec)
+
+MariaDB [company]> select distinct manager_id from employees;
++------------+
+| manager_id |
++------------+
+|        101 |
+|        102 |
+|        103 |
+|        104 |
++------------+
+4 rows in set (0.000 sec)
+
+MariaDB [company]>
