@@ -1,0 +1,370 @@
+srman@MANISH c:\xampp
+# mysql -u root
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 17
+Server version: 10.4.32-MariaDB mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> drop database WRC;
+Query OK, 4 rows affected (0.068 sec)
+
+MariaDB [(none)]> create database WRC;
+Query OK, 1 row affected (0.001 sec)
+
+MariaDB [(none)]> use WRC;
+Database changed
+
+MariaDB [WRC]> create table emp( empno int, ename nvarchar(20), job nvarchar(10), deptname nvarchar(10), sal int, address nvarchar(30));
+Query OK, 0 rows affected (0.022 sec)
+
+MariaDB [WRC]> desc emp;
++-----------+--------------+------+-----+---------+-------+
+| Field     | Type         | Null | Key | Default | Extra |
++-----------+--------------+------+-----+---------+-------+
+| empno     | int(11)      | YES  |     | NULL    |       |
+| ename     | varchar(20)  | YES  |     | NULL    |       |
+| job       | varchar(10)  | YES  |     | NULL    |       |
+| deptname  | varchar(10)  | YES  |     | NULL    |       |
+| sal       | int(11)      | YES  |     | NULL    |       |
+| address   | varchar(30)  | YES  |     | NULL    |       |
++-----------+--------------+------+-----+---------+-------+
+6 rows in set (0.013 sec)
+
+MariaDB [WRC]> create table product( pid int, pname nvarchar(20), price int, description nvarchar(100));
+Query OK, 0 rows affected (0.024 sec)
+
+MariaDB [WRC]> desc product;
++-------------+--------------+------+-----+---------+-------+
+| Field       | Type         | Null | Key | Default | Extra |
++-------------+--------------+------+-----+---------+-------+
+| pid         | int(11)      | YES  |     | NULL    |       |
+| pname       | varchar(20)  | YES  |     | NULL    |       |
+| price       | int(11)      | YES  |     | NULL    |       |
+| description | varchar(100) | YES  |     | NULL    |       |
++-------------+--------------+------+-----+---------+-------+
+4 rows in set (0.013 sec)
+
+MariaDB [WRC]> create table customer( cid int, cname nvarchar(30), address nvarchar(100));
+Query OK, 0 rows affected (0.026 sec)
+
+MariaDB [WRC]> desc customer;
++----------+--------------+------+-----+---------+-------+
+| Field    | Type         | Null | Key | Default | Extra |
++----------+--------------+------+-----+---------+-------+
+| cid      | int(11)      | YES  |     | NULL    |       |
+| cname    | varchar(30)  | YES  |     | NULL    |       |
+| address  | varchar(100) | YES  |     | NULL    |       |
++----------+--------------+------+-----+---------+-------+
+3 rows in set (0.014 sec)
+
+MariaDB [WRC]> create table sells( pid int, cid int, quantity int);
+Query OK, 0 rows affected (0.025 sec)
+
+MariaDB [WRC]> desc sells;
++----------+---------+------+-----+---------+-------+
+| Field    | Type    | Null | Key | Default | Extra |
++----------+---------+------+-----+---------+-------+
+| pid      | int(11) | YES  |     | NULL    |       |
+| cid      | int(11) | YES  |     | NULL    |       |
+| quantity | int(11) | YES  |     | NULL    |       |
++----------+---------+------+-----+---------+-------+
+3 rows in set (0.014 sec)
+
+MariaDB [WRC]> INSERT INTO emp (empno, ename, job, deptname, sal, address)
+    -> VALUES
+    -> (1, 'Ram', 'Manager', 'HR', 50000, '123 Ram bazar'),
+    -> (2, 'Hari', 'Developer', 'IT', 60000, '456 Mahendrapool'),
+    -> (3, 'David', 'Salesperson', 'Sales', 40000, '789 Chauthe'),
+    -> (4, 'Sarah', 'Analyst', 'Finance', 55000, '321 Amarsingh'),
+    -> (5, 'Sagun', 'Designer', 'Marketing', 45000, '987 Lamachour');
+Query OK, 5 rows affected, 1 warning (0.006 sec)
+Records: 5  Duplicates: 0  Warnings: 1
+
+MariaDB [WRC]> select * from emp;
++--------+-----------+------------+----------+-------+-----------------+
+| empno  | ename     | job        | deptname | sal   | address         |
++--------+-----------+------------+----------+-------+-----------------+
+| 1      | Ram       | Manager    | HR       | 50000 | 123 Ram bazar   |
+| 2      | Hari      | Developer  | IT       | 60000 | 456 Mahendrapool|
+| 3      | David     | Salesperson| Sales    | 40000 | 789 Chauthe     |
+| 4      | Sarah     | Analyst    | Finance  | 55000 | 321 Amarsingh   |
+| 5      | Sagun     | Designer   | Marketing| 45000 | 987 Lamachour   |
++--------+-----------+------------+----------+-------+-----------------+
+5 rows in set (0.000 sec)
+
+MariaDB [WRC]> INSERT INTO product (pid, pname, price, description)
+    -> VALUES
+    -> (1, 'Product A', 100, 'Description A'),
+    -> (2, 'Product B', 200, 'Description B'),
+    -> (3, 'Product C', 300, 'Description C'),
+    -> (4, 'Product D', 400, 'Description D'),
+    -> (5, 'Product E', 500, 'Description E');
+Query OK, 5 rows affected (0.006 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+MariaDB [WRC]> select * from product;
++------+-----------+-------+---------------+
+| pid  | pname     | price | description   |
++------+-----------+-------+---------------+
+| 1    | Product A | 100   | Description A |
+| 2    | Product B | 200   | Description B |
+| 3    | Product C | 300   | Description C |
+| 4    | Product D | 400   | Description D |
+| 5    | Product E | 500   | Description E |
++------+-----------+-------+---------------+
+5 rows in set (0.000 sec)
+
+MariaDB [WRC]> INSERT INTO customer (cid, cname, address)
+    -> VALUES
+    -> (1, 'Ram', '123 Ram bazar'),
+    -> (2, 'Hari', '456 Mahendrapool'),
+    -> (3, 'David', '789 Chauthe'),
+    -> (4, 'Sarah', '321 Amarsingh'),
+    -> (5, 'Sagun', '987 Lamachour');
+Query OK, 5 rows affected (0.006 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+MariaDB [WRC]> select * from customer;
++------+-------+-----------------+
+| cid  | cname | address         |
++------+-------+-----------------+
+| 1    | Ram   | 123 Ram bazar   |
+| 2    | Hari  | 456 Mahendrapool|
+| 3    | David | 789 Chauthe     |
+| 4    | Sarah | 321 Amarsingh   |
+| 5    | Sagun | 987 Lamachour   |
++------+-------+-----------------+
+5 rows in set (0.000 sec)
+
+MariaDB [WRC]> INSERT INTO sells (pid, cid, quantity)
+    -> VALUES
+    -> (1, 1, 10),
+    -> (2, 2, 5),
+    -> (3, 3, 8),
+    -> (4, 4, 3),
+    -> (5, 5, 2);
+Query OK, 5 rows affected (0.007 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+MariaDB [WRC]> select * from sells;
++------+-----+----------+
+| pid  | cid | quantity |
++------+-----+----------+
+| 1    | 1   | 10       |
+| 2    | 2   | 5        |
+| 3    | 3   | 8        |
+| 4    | 4   | 3        |
+| 5    | 5   | 2        |
++------+-----+----------+
+5 rows in set (0.000 sec)
+
+MariaDB [WRC]> SELECT * FROM emp WHERE sal > 25000;
++--------+-----------+------------+----------+-------+-----------------+
+| empno  | ename     | job        | deptname | sal   | address         |
++--------+-----------+------------+----------+-------+-----------------+
+| 1      | Ram       | Manager    | HR       | 50000 | 123 Ram bazar   |
+| 2      | Hari      | Developer  | IT       | 60000 | 456 Mahendrapool|
+| 3      | David     | Salesperson| Sales    | 40000 | 789 Chauthe     |
+| 4      | Sarah     | Analyst    | Finance  | 55000 | 321 Amarsingh   |
+| 5      | Sagun     | Designer   | Marketing| 45000 | 987 Lamachour   |
++--------+-----------+------------+----------+-------+-----------------+
+5 rows in set (0.000 sec)
+
+MariaDB [WRC]> SELECT * FROM product WHERE price > 500.00;
+Empty set (0.000 sec)
+
+MariaDB [WRC]> SELECT * FROM customer WHERE address LIKE '%Pokhara%';
+Empty set (0.000 sec)
+
+MariaDB [WRC]> SELECT * FROM customer WHERE address LIKE '%Lamachour%';
++------+-------+---------------+
+| cid  | cname | address       |
++------+-------+---------------+
+| 5    | Sagun | 987 Lamachour |
++------+-------+---------------+
+1 row in set (0.000 sec)
+
+MariaDB [WRC]> SELECT * FROM emp WHERE job = 'HR' AND address LIKE '%Chauthe%';
+Empty set (0.002 sec)
+
+MariaDB [WRC]> SELECT * FROM emp WHERE job = 'Manager' AND address LIKE '%Chauthe%';
+Empty set (0.000 sec)
+
+MariaDB [WRC]> SELECT * FROM emp WHERE job = 'Manager';
++--------+-----------+---------+----------+-------+---------------+
+| empno  | ename     | job     | deptname | sal   | address       |
++--------+-----------+---------+----------+-------+---------------+
+| 1      | Ram       | Manager | HR       | 50000 | 123 Ram bazar |
++--------+-----------+---------+----------+-------+---------------+
+1 row in set (0.000 sec)
+
+MariaDB [WRC]> SELECT * FROM emp WHERE address LIKE '%Chauthe%';
++--------+--------+------------+----------+-------+------------+
+| empno  | ename  | job        | deptname | sal   | address    |
++--------+--------+------------+----------+-------+------------+
+| 3      | David  | Salesperson| Sales    | 40000 | 789 Chauthe|
++--------+--------+------------+----------+-------+------------+
+1 row in set (0.001 sec)
+
+MariaDB [WRC]> SELECT COUNT(*) AS TotalEmployees FROM emp;
++----------------+
+| TotalEmployees |
++----------------+
+| 5              |
++----------------+
+1 row in set (0.003 sec)
+
+MariaDB [WRC]> SELECT COUNT(DISTINCT job) AS TotalPosts FROM emp;
++-------------+
+| TotalPosts  |
++-------------+
+| 5           |
++-------------+
+1 row in set (0.000 sec)
+
+MariaDB [WRC]> UPDATE emp SET sal = sal * 1.15 WHERE deptname = '1' AND job = 'Manager';
+Query OK, 0 rows affected (0.000 sec)
+Rows matched: 0  Changed: 0  Warnings: 0
+
+MariaDB [WRC]> desc emp;
++-----------+--------------+------+-----+---------+-------+
+| Field     | Type         | Null | Key | Default | Extra |
++-----------+--------------+------+-----+---------+-------+
+| empno     | int(11)      | YES  |     | NULL    |       |
+| ename     | varchar(20)  | YES  |     | NULL    |       |
+| job       | varchar(10)  | YES  |     | NULL    |       |
+| deptname  | varchar(10)  | YES  |     | NULL    |       |
+| sal       | int(11)      | YES  |     | NULL    |       |
+| address   | varchar(30)  | YES  |     | NULL    |       |
++-----------+--------------+------+-----+---------+-------+
+6 rows in set (0.015 sec)
+
+MariaDB [WRC]> select * from emp;
++--------+-----------+------------+----------+-------+-----------------+
+| empno  | ename     | job        | deptname | sal   | address         |
++--------+-----------+------------+----------+-------+-----------------+
+| 1      | Ram       | Manager    | HR       | 50000 | 123 Ram bazar   |
+| 2      | Hari      | Developer  | IT       | 60000 | 456 Mahendrapool|
+| 3      | David     | Salesperson| Sales    | 40000 | 789 Chauthe     |
+| 4      | Sarah     | Analyst    | Finance  | 55000 | 321 Amarsingh   |
+| 5      | Sagun     | Designer   | Marketing| 45000 | 987 Lamachour   |
++--------+-----------+------------+----------+-------+-----------------+
+5 rows in set (0.000 sec)
+
+MariaDB [WRC]> SELECT * FROM emp WHERE sal > (SELECT AVG(sal) FROM emp);
++--------+-----------+-----------+----------+-------+-----------------+
+| empno  | ename     | job       | deptname | sal   | address         |
++--------+-----------+-----------+----------+-------+-----------------+
+| 2      | Hari      | Developer | IT       | 60000 | 456 Mahendrapool|
+| 4      | Sarah     | Analyst   | Finance  | 55000 | 321 Amarsingh   |
++--------+-----------+-----------+----------+-------+-----------------+
+2 rows in set (0.004 sec)
+
+MariaDB [WRC]> SELECT * FROM product WHERE pid IN (SELECT pid FROM sells WHERE cid = 5);
++------+-----------+-------+---------------+
+| pid  | pname     | price | description   |
++------+-----------+-------+---------------+
+| 5    | Product E | 500   | Description E |
++------+-----------+-------+---------------+
+1 row in set (0.002 sec)
+
+MariaDB [WRC]> SELECT * FROM customer WHERE cid IN (SELECT cid FROM sells WHERE pid = 3);
++------+-------+------------+
+| cid  | cname | address    |
++------+-------+------------+
+| 3    | David | 789 Chauthe|
++------+-------+------------+
+1 row in set (0.000 sec)
+
+MariaDB [WRC]> SELECT * FROM product WHERE pid = (SELECT pid FROM sells GROUP BY pid ORDER BY SUM(quantity) DESC LIMIT 1);
++------+-----------+-------+---------------+
+| pid  | pname     | price | description   |
++------+-----------+-------+---------------+
+| 1    | Product A | 100   | Description A |
++------+-----------+-------+---------------+
+1 row in set (0.002 sec)
+
+MariaDB [WRC]> SELECT SUM(sal) AS TotalAmount FROM emp WHERE deptname = 'HR';
++-------------+
+| TotalAmount |
++-------------+
+| 50000       |
++-------------+
+1 row in set (0.000 sec)
+
+MariaDB [WRC]> SELECT * FROM emp WHERE sal = (SELECT MAX(sal) FROM emp);
++--------+--------+----------+----------+-------+-----------------+
+| empno  | ename  | job      | deptname | sal   | address         |
++--------+--------+----------+----------+-------+-----------------+
+| 2      | Hari   | Developer| IT       | 60000 | 456 Mahendrapool|
++--------+--------+----------+----------+-------+-----------------+
+1 row in set (0.000 sec)
+
+MariaDB [WRC]> SELECT COUNT(*) AS NumEmployees FROM emp WHERE sal < (SELECT AVG(sal) FROM emp);
++---------------+
+| NumEmployees  |
++---------------+
+| 2             |
++---------------+
+1 row in set (0.000 sec)
+
+MariaDB [WRC]> SELECT * FROM emp WHERE sal = (SELECT MIN(sal) FROM emp WHERE deptname = 'Sales');
++--------+--------+------------+----------+-------+------------+
+| empno  | ename  | job        | deptname | sal   | address    |
++--------+--------+------------+----------+-------+------------+
+| 3      | David  | Salesperson| Sales    | 40000 | 789 Chauthe|
++--------+--------+------------+----------+-------+------------+
+1 row in set (0.000 sec)
+
+MariaDB [WRC]> UPDATE emp SET sal = sal + 1000 WHERE sal < (SELECT AVG(sal) FROM emp);
+Query OK, 2 rows affected (0.005 sec)
+Rows matched: 2  Changed: 2  Warnings: 0
+
+MariaDB [WRC]> select * from emp;
++--------+-----------+------------+----------+-------+-----------------+
+| empno  | ename     | job        | deptname | sal   | address         |
++--------+-----------+------------+----------+-------+-----------------+
+| 1      | Ram       | Manager    | HR       | 50000 | 123 Ram bazar   |
+| 2      | Hari      | Developer  | IT       | 60000 | 456 Mahendrapool|
+| 3      | David     | Salesperson| Sales    | 41000 | 789 Chauthe     |
+| 4      | Sarah     | Analyst    | Finance  | 55000 | 321 Amarsingh   |
+| 5      | Sagun     | Designer   | Marketing| 46000 | 987 Lamachour   |
++--------+-----------+------------+----------+-------+-----------------+
+5 rows in set (0.000 sec)
+
+MariaDB [WRC]> UPDATE emp SET deptname = 'Sales', address = 'Pokhara' WHERE ename = 'Sita';
+Query OK, 0 rows affected (0.001 sec)
+Rows matched: 0  Changed: 0  Warnings: 0
+
+MariaDB [WRC]> select * from emp;
++--------+-----------+------------+----------+-------+-----------------+
+| empno  | ename     | job        | deptname | sal   | address         |
++--------+-----------+------------+----------+-------+-----------------+
+| 1      | Ram       | Manager    | HR       | 50000 | 123 Ram bazar   |
+| 2      | Hari      | Developer  | IT       | 60000 | 456 Mahendrapool|
+| 3      | David     | Salesperson| Sales    | 41000 | 789 Chauthe     |
+| 4      | Sarah     | Analyst    | Finance  | 55000 | 321 Amarsingh   |
+| 5      | Sagun     | Designer   | Marketing| 46000 | 987 Lamachour   |
++--------+-----------+------------+----------+-------+-----------------+
+5 rows in set (0.000 sec)
+
+MariaDB [WRC]> UPDATE emp SET deptname = 'Sales', address = 'Pokhara' WHERE ename = 'David';
+Query OK, 1 row affected (0.006 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [WRC]> select * from emp;
++--------+-----------+------------+----------+-------+-----------------+
+| empno  | ename     | job        | deptname | sal   | address         |
++--------+-----------+------------+----------+-------+-----------------+
+| 1      | Ram       | Manager    | HR       | 50000 | 123 Ram bazar   |
+| 2      | Hari      | Developer  | IT       | 60000 | 456 Mahendrapool|
+| 3      | David     | Salesperson| Sales    | 41000 | Pokhara         |
+| 4      | Sarah     | Analyst    | Finance  | 55000 | 321 Amarsingh   |
+| 5      | Sagun     | Designer   | Marketing| 46000 | 987 Lamachour   |
++--------+-----------+------------+----------+-------+-----------------+
+5 rows in set (0.000 sec)
+
+MariaDB [WRC]>

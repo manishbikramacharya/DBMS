@@ -1,0 +1,126 @@
+
+
+srman@MANISH c:\xampp
+# mysql -u root
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 19
+Server version: 10.4.32-MariaDB mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> create table loan(loanno int primary key, cname nvarchar(50));
+ERROR 1046 (3D000): No database selected
+
+MariaDB [(none)]> use WRC;
+Database changed
+
+MariaDB [WRC]> create table loan(loanno int primary key, cname nvarchar(50));
+Query OK, 0 rows affected (0.024 sec)
+
+MariaDB [WRC]> create table account(accno int primary key, cname nvarchar(50));
+Query OK, 0 rows affected (0.025 sec)
+
+MariaDB [WRC]> desc loan;
++--------+--------------+------+-----+---------+-------+
+| Field  | Type         | Null | Key | Default | Extra |
++--------+--------------+------+-----+---------+-------+
+| loanno | int(11)      | NO   | PRI | NULL    |       |
+| cname  | varchar(50)  | YES  |     | NULL    |       |
++--------+--------------+------+-----+---------+-------+
+2 rows in set (0.013 sec)
+
+MariaDB [WRC]> desc account;
++--------+--------------+------+-----+---------+-------+
+| Field  | Type         | Null | Key | Default | Extra |
++--------+--------------+------+-----+---------+-------+
+| accno  | int(11)      | NO   | PRI | NULL    |       |
+| cname  | varchar(50)  | YES  |     | NULL    |       |
++--------+--------------+------+-----+---------+-------+
+2 rows in set (0.014 sec)
+
+MariaDB [WRC]> insert into loan(loanno, cname) VALUES (1, 'Ram Thapa'), (2, 'Hari Nepal'), (3, 'Shyam KC');
+Query OK, 3 rows affected (0.005 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+MariaDB [WRC]> select * from loan;
++--------+-----------+
+| loanno | cname     |
++--------+-----------+
+| 1      | Ram Thapa |
+| 2      | Hari Nepal|
+| 3      | Shyam KC  |
++--------+-----------+
+3 rows in set (0.000 sec)
+
+MariaDB [WRC]> insert into account(accno, cname) VALUES (101, 'Ram Thapa'), (102, 'Hari Nepal'), (103, 'Shyam KC'), (104, 'Amit Thapa');
+Query OK, 4 rows affected (0.006 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+MariaDB [WRC]> select * from account;
++--------+-----------+
+| accno  | cname     |
++--------+-----------+
+| 101    | Ram Thapa |
+| 102    | Hari Nepal|
+| 103    | Shyam KC  |
+| 104    | Amit Thapa|
++--------+-----------+
+4 rows in set (0.000 sec)
+
+MariaDB [WRC]> select distinct cname from (select cname from loan union select cname from account) as customers;
++-----------+
+| cname     |
++-----------+
+| Ram Thapa |
+| Hari Nepal|
+| Shyam KC  |
+| Amit Thapa|
++-----------+
+4 rows in set (0.000 sec)
+
+MariaDB [WRC]> select cname from loan where cname NOT IN (select cname from account);
+Empty set (0.001 sec)
+
+MariaDB [WRC]> select cname from account where cname NOT IN (select cname from loan);
++-----------+
+| cname     |
++-----------+
+| Amit Thapa|
++-----------+
+1 row in set (0.001 sec)
+
+MariaDB [WRC]> select cname from loan where cname IN (select cname from account);
++-----------+
+| cname     |
++-----------+
+| Ram Thapa |
+| Hari Nepal|
+| Shyam KC  |
++-----------+
+3 rows in set (0.000 sec)
+
+MariaDB [WRC]> insert into loan(loanno, cname) VALUES (4, 'Ashim Thapa');
+Query OK, 1 row affected (0.004 sec)
+
+MariaDB [WRC]> select * from loan;
++--------+-----------+
+| loanno | cname     |
++--------+-----------+
+| 1      | Ram Thapa |
+| 2      | Hari Nepal|
+| 3      | Shyam KC  |
+| 4      | Ashim Thapa|
++--------+-----------+
+4 rows in set (0.000 sec)
+
+MariaDB [WRC]> select cname from loan where cname NOT IN (select cname from account);
++-----------+
+| cname     |
++-----------+
+| Ashim Thapa|
++-----------+
+1 row in set (0.000 sec)
+
+MariaDB [WRC]>

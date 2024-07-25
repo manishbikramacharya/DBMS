@@ -1,0 +1,130 @@
+
+srman@MANISH c:\xampp
+# mysql -u root
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 20
+Server version: 10.4.32-MariaDB mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> create database WRC;
+Query OK, 1 row affected (0.001 sec)
+
+MariaDB [(none)]> use WRC;
+Database changed
+
+MariaDB [WRC]> create table emp(eno int, ename varchar(50), addr varchar(100), post varchar(50), dept int, sal int, deptid int);
+Query OK, 0 rows affected (0.025 sec)
+
+MariaDB [WRC]> desc emp;
++--------+--------------+------+-----+---------+-------+
+| Field  | Type         | Null | Key | Default | Extra |
++--------+--------------+------+-----+---------+-------+
+| eno    | int(11)      | YES  |     | NULL    |       |
+| ename  | varchar(50)  | YES  |     | NULL    |       |
+| addr   | varchar(100) | YES  |     | NULL    |       |
+| post   | varchar(50)  | YES  |     | NULL    |       |
+| dept   | int(11)      | YES  |     | NULL    |       |
+| sal    | int(11)      | YES  |     | NULL    |       |
+| deptid | int(11)      | YES  |     | NULL    |       |
++--------+--------------+------+-----+---------+-------+
+7 rows in set (0.013 sec)
+
+MariaDB [WRC]> create table dept (deptid int, deptname varchar(50));
+Query OK, 0 rows affected (0.026 sec)
+
+MariaDB [WRC]> desc dept;
++----------+--------------+------+-----+---------+-------+
+| Field    | Type         | Null | Key | Default | Extra |
++----------+--------------+------+-----+---------+-------+
+| deptid   | int(11)      | YES  |     | NULL    |       |
+| deptname | varchar(50)  | YES  |     | NULL    |       |
++----------+--------------+------+-----+---------+-------+
+2 rows in set (0.012 sec)
+
+MariaDB [WRC]> insert into emp (eno, ename, addr, post, dept, sal, deptid)
+    -> values
+    -> (1, 'John Doe', 'Kathmandu', 'Manager', 1, 5000, NULL),
+    -> (2, 'Jane Smith', 'Pokhara', 'Supervisor', 2, 4000, NULL),
+    -> (3, 'Mark Johnson', 'Pokhara', 'Clerk', 1, 3000, NULL),
+    -> (4, 'Emily Brown', 'Biratnagar', 'Assistant', 2, 2500, NULL),
+    -> (5, 'David Wilson', 'Pokhara', 'Lecturer', 3, 3500, NULL);
+Query OK, 5 rows affected (0.005 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+MariaDB [WRC]> select * from emp;
++-----+-------------+-----------+------------+------+-------+--------+
+| eno | ename       | addr      | post       | dept | sal   | deptid |
++-----+-------------+-----------+------------+------+-------+--------+
+| 1   | John Doe    | Kathmandu | Manager    | 1    | 5000  | NULL   |
+| 2   | Jane Smith  | Pokhara   | Supervisor | 2    | 4000  | NULL   |
+| 3   | Mark Johnson| Pokhara   | Clerk      | 1    | 3000  | NULL   |
+| 4   | Emily Brown | Biratnagar| Assistant  | 2    | 2500  | NULL   |
+| 5   | David Wilson| Pokhara   | Lecturer   | 3    | 3500  | NULL   |
++-----+-------------+-----------+------------+------+-------+--------+
+5 rows in set (0.000 sec)
+
+MariaDB [WRC]> create view location as select * from emp where addr = 'Pokhara';
+Query OK, 0 rows affected (0.007 sec)
+
+MariaDB [WRC]> select * from location;
++-----+-------------+---------+------------+------+-------+--------+
+| eno | ename       | addr    | post       | dept | sal   | deptid |
++-----+-------------+---------+------------+------+-------+--------+
+| 2   | Jane Smith  | Pokhara | Supervisor | 2    | 4000  | NULL   |
+| 3   | Mark Johnson| Pokhara | Clerk      | 1    | 3000  | NULL   |
+| 5   | David Wilson| Pokhara | Lecturer   | 3    | 3500  | NULL   |
++-----+-------------+---------+------------+------+-------+--------+
+3 rows in set (0.001 sec)
+
+MariaDB [WRC]> create view search_eno as select * from emp where eno = 5;
+Query OK, 0 rows affected (0.006 sec)
+
+MariaDB [WRC]> select * from search_eno;
++-----+-------------+---------+----------+------+-------+--------+
+| eno | ename       | addr    | post     | dept | sal   | deptid |
++-----+-------------+---------+----------+------+-------+--------+
+| 5   | David Wilson| Pokhara | Lecturer | 3    | 3500  | NULL   |
++-----+-------------+---------+----------+------+-------+--------+
+1 row in set (0.001 sec)
+
+MariaDB [WRC]> select * from location where post = 'Lecturer';
++-----+-------------+---------+----------+------+-------+--------+
+| eno | ename       | addr    | post     | dept | sal   | deptid |
++-----+-------------+---------+----------+------+-------+--------+
+| 5   | David Wilson| Pokhara | Lecturer | 3    | 3500  | NULL   |
++-----+-------------+---------+----------+------+-------+--------+
+1 row in set (0.000 sec)
+
+MariaDB [WRC]> select * from location where post = 'Manager';
+Empty set (0.000 sec)
+
+MariaDB [WRC]> insert into dept(deptid, deptname)
+    -> values
+    -> (101, 'Department 1'),
+    -> (102, 'Department 2'),
+    -> (103, 'Department 3');
+Query OK, 3 rows affected (0.005 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+MariaDB [WRC]> create view department as select d.deptname, count(e.eno) as numemployees, sum(e.sal) as totalsalaryinvested from emp e join dept d on e.dept = d.deptid where d.deptname = 'Department 1' group by d.deptname;
+Query OK, 0 rows affected (0.005 sec)
+
+MariaDB [WRC]> select * from department;
+Empty set (0.001 sec)
+
+MariaDB [WRC]> create view empdetail as select * from emp where dept = 2;
+Query OK, 0 rows affected (0.006 sec)
+
+MariaDB [WRC]> select * from empdetail;
++-----+-------------+-----------+------------+------+-------+--------+
+| eno | ename       | addr      | post       | dept | sal   | deptid |
++-----+-------------+-----------+------------+------+-------+--------+
+| 2   | Jane Smith  | Pokhara   | Supervisor | 2    | 4000  | NULL   |
+| 4   | Emily Brown | Biratnagar| Assistant  | 2    | 2500  | NULL   |
++-----+-------------+-----------+------------+------+-------+--------+
+2 rows in set (0.001 sec)
+
+MariaDB [WRC]>
